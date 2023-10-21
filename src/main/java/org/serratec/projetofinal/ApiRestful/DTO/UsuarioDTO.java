@@ -17,10 +17,13 @@ public class UsuarioDTO {
 	private LocalDate dataNascimento;
 
 	private List<RelacionamentoDTO> relacionamennto;
+	private String urlImagem;
 
 	public UsuarioDTO() {
 	}
+	
 
+	
 	public UsuarioDTO(Usuario usuario) {
 		super();
 		this.nome = usuario.getNome();
@@ -72,5 +75,18 @@ public class UsuarioDTO {
 	public void setRelacionamennto(List<RelacionamentoDTO> relacionamennto) {
 		this.relacionamennto = relacionamennto;
 	}
+
+
+
+	public String getUrlImagem() {
+		return urlImagem;
+	}
+
+
+
+	public void setUrlImagem(String urlImagem) {
+		this.urlImagem = urlImagem;
+	}
+	
 	
 }

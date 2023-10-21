@@ -1,5 +1,8 @@
 package org.serratec.projetofinal.ApiRestful.service;
 
+import java.io.IOException;
+
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,6 +13,8 @@ import org.serratec.projetofinal.ApiRestful.model.Usuario;
 import org.serratec.projetofinal.ApiRestful.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Service
 public class UsuarioService {
@@ -17,6 +22,35 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
+	
+	@Autowired
+	private FotoService fotoService;
+	
+	public List<UsuarioDTO> listar() {
+		List<Usuario> usuarioList = usuarioRepository.findAll();
+		
+		List<UsuarioDTO> usuarioDtoList = usuarioList.stream().map(u -> {
+			return adicionarImagemURI(u);
+		}).collect(Collectors.toList());
+		
+		return usuarioDtoList;
+	}
+
+	public UsuarioDTO adicionarImagemURI(Usuario usuario) {
+	URI uri = ServletUriComponentsBuilder.
+			fromCurrentContextPath()
+			.path("/usuario/{id}/foto")
+			.buildAndExpand(usuario.getId())
+			.toUri();
+	
+	UsuarioDTO dto = new UsuarioDTO();
+	dto.setNome(usuario.getNome());
+	dto.setSobrenome(usuario.getSobrenome());
+	dto.setDataNascimento(usuario.getDataNascimento());
+	dto.setEmail(usuario.getEmail());
+	dto.setUrlImagem(uri.toString());
+	return dto;
+}
 	
 
 	
@@ -41,17 +75,17 @@ public class UsuarioService {
 		return usuarioDTO;
 	}
 	
-	public UsuarioDTO inserir(Usuario usuario) throws EmailException {
-		UsuarioDTO usuariosDTO = new UsuarioDTO();
+	public UsuarioDTO inserir(Usuario usuario, MultipartFile file) throws EmailException, IOException {
+		/*UsuarioDTO usuariosDTO = new UsuarioDTO();*/
 		Usuario usuarioEmailExistente = usuarioRepository.findByEmail(usuario.getEmail());
 		if (usuarioEmailExistente != null) {
 			throw new EmailException("Email já cadastrado.");
 		}
-		usuariosDTO.setNome(usuario.getNome());
+		/*usuariosDTO.setNome(usuario.getNome());
 		usuariosDTO.setSobrenome(usuario.getSobrenome());
 		usuariosDTO.setEmail(usuario.getEmail());
 		usuariosDTO.setDataNascimento(usuario.getDataNascimento());
-		usuariosDTO.setNome(usuario.getNome());
+		usuariosDTO.setNome(usuario.getNome());*/
 						
 //		usuario = usuarioRepository.save(usuario);
 //		if(!usuario.getRelacionamento().isEmpty()) {
@@ -62,8 +96,14 @@ public class UsuarioService {
 //			}
 //		}
 		usuario = usuarioRepository.save(usuario);
-		return usuariosDTO;
+		fotoService.inserir(usuario, file);
+		return adicionarImagemURI(usuario);
 	}
+
+
+
+	
+	
 
 }
 
