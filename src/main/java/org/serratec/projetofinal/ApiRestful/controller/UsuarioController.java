@@ -58,6 +58,22 @@ public class UsuarioController {
         }
         return ResponseEntity.ok(usuarioDTO);
     }
+    @GetMapping("/sobremim/{id}")
+    public ResponseEntity<UsuarioDTO> buscarComSeguidor(@PathVariable Long id) {
+    	UsuarioDTO usuarioDTO = usuarioService.findById(id);
+//    	List<Relacionamento> seguidores = relacionamentoRepository.buscarRelacionamentos(id);
+//    	List<RelacionamentoDTO> relacionamentoDTO = seguidores.stream().map(relacionamento -> new RelacionamentoDTO(relacionamento)).collect(Collectors.toList());
+//    	usuarioDTO.setRelacionamennto(relacionamentoDTO);
+//		List<UsuarioDTO> usuariosDTO = new ArrayList<>();
+//		for (UsuarioDTO usuariosDTO: relacionamentoDTO) {
+//			usuariosDTO.add(new UsuarioDTO(usuariosDTO));
+//		}
+		
+        if (usuarioDTO == null) {
+        	return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarioDTO);
+    }
 
     @PostMapping
     public ResponseEntity<UsuarioDTO> inserir(@Valid @RequestBody Usuario usuario) {

@@ -37,4 +37,9 @@ public class RelacionamentoDTO {
 		this.dataInicio = dataInicio;
 	}
 
+	public Long getId(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
