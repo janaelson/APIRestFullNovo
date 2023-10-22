@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.serratec.projetofinal.ApiRestful.DTO.PostagemDTO;
+import org.serratec.projetofinal.ApiRestful.model.Postagem;
+import org.serratec.projetofinal.ApiRestful.repository.PostagemRepository;
 import org.serratec.projetofinal.ApiRestful.service.PostagemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,43 +24,48 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/postagem")
 public class PostagemController {
 
-    @Autowired
-    private PostagemService postagemService; 
+	@Autowired
+	private PostagemService postagemService;
 
-    @GetMapping
-    public ResponseEntity<List<PostagemDTO>> listar() {
-        List<PostagemDTO> postagens = postagemService.listarPostagens();
-        return ResponseEntity.ok(postagens);
-    }
+	@Autowired
+	public PostagemRepository postagemRepository;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PostagemDTO> buscar(@PathVariable Long id) {
-        PostagemDTO postagemDTO = postagemService.buscarPostagemPorId(id);
-        if (postagemDTO == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(postagemDTO);
-    }
+	@GetMapping
+	public ResponseEntity<List<PostagemDTO>> listar() {
+		List<PostagemDTO> postagens = postagemService.listarPostagens();
+		return ResponseEntity.ok(postagens);
+	}
 
-    @PostMapping
-    public ResponseEntity<PostagemDTO> inserir(@Valid @RequestBody PostagemDTO postagemDTO) {
-        PostagemDTO novaPostagem = postagemService.inserirPostagem(postagemDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novaPostagem);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<PostagemDTO> buscar(@PathVariable Long id) {
+		PostagemDTO postagemDTO = postagemService.buscarPostagemPorId(id);
+		if (postagemDTO == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(postagemDTO);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PostagemDTO> atualizar(@PathVariable Long id, @Valid @RequestBody PostagemDTO postagemDTO) {
-        PostagemDTO postagemAtualizada = postagemService.atualizarPostagem(id, postagemDTO);
-        if (postagemAtualizada != null) {
-            return ResponseEntity.ok(postagemAtualizada);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@PostMapping
+	public ResponseEntity<PostagemDTO> inserirPostagem(@Valid @RequestBody Postagem postagem) {
+		PostagemDTO postagemDTO = postagemService.inserirPostagem(postagem);
+		return ResponseEntity.status(HttpStatus.CREATED).body(postagemDTO);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        postagemService.excluirPostagem(id);
-        return ResponseEntity.noContent().build();
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<PostagemDTO> atualizar(@PathVariable Long id, @Valid @RequestBody Postagem postagem) {
+		PostagemDTO postagemDTO = postagemService.buscarPostagemPorId(id);
+		if (postagemDTO != null) {
+			postagem.setId(id);
+			postagemRepository.save(postagem);
+
+			return ResponseEntity.ok(postagemDTO);
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluir(@PathVariable Long id) {
+		postagemService.excluirPostagem(id);
+		return ResponseEntity.noContent().build();
+	}
 }
