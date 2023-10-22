@@ -15,10 +15,10 @@ public class UsuarioDTO {
 	private String email;
 
 	private LocalDate dataNascimento;
+	
+	private String urlImagem;
 
 	private List<RelacionamentoDTO> relacionamennto;
-
-	private String urlImagem;
 
 	public UsuarioDTO() {
 	}

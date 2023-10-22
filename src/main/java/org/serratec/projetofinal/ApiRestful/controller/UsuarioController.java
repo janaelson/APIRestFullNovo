@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.serratec.projetofinal.ApiRestful.DTO.RelacionamentoDTO;
 import org.serratec.projetofinal.ApiRestful.DTO.UsuarioDTO;
+import org.serratec.projetofinal.ApiRestful.exeption.EmailException;
 import org.serratec.projetofinal.ApiRestful.model.Foto;
 import org.serratec.projetofinal.ApiRestful.model.Relacionamento;
 import org.serratec.projetofinal.ApiRestful.model.Usuario;
@@ -75,7 +76,24 @@ public class UsuarioController {
 		usuarioDTO.setRelacionamennto(relacionamentoDTO);
 		return ResponseEntity.ok(usuarioDTO);
 	}
+	
+	@GetMapping("/seguidores/{id}")
+	public ResponseEntity<List<RelacionamentoDTO>> buscarRelacionamento(@PathVariable Long id) {
+		List<Relacionamento> seguidores = relacionamentoRepository.buscarRelacionamentos(id);
+		List<RelacionamentoDTO> relacionamentoDTO = seguidores.stream()
+				.map(relacionamento -> new RelacionamentoDTO(relacionamento)).collect(Collectors.toList());
+		return ResponseEntity.ok(relacionamentoDTO);
+	}
 
+	@GetMapping("/{id}/foto")
+	public ResponseEntity<byte[]> buscarFoto(@PathVariable Long id) {
+		Foto foto = fotoService.buscarPorIdUsuario(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, foto.getTipo());
+		headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(foto.getDados().length));
+		return new ResponseEntity<>(foto.getDados(), headers, HttpStatus.OK);
+	}
+	
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<UsuarioDTO> inserir(
     	@RequestPart MultipartFile file, @RequestPart Usuario usuario) throws IOException{
@@ -87,28 +105,22 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<UsuarioDTO> inserir(@Valid @RequestBody Usuario usuario) throws IOException {
     	UsuarioDTO usuarioDTO = new UsuarioDTO();
-    	usuarioDTO = usuarioService.inserir(usuario, null);
+    	usuarioDTO = usuarioService.inserir(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
     }
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
-		Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
-		if (usuarioOpt.isPresent()) {
+	public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id,
+			@Valid @RequestBody Usuario usuario,@RequestPart MultipartFile file) throws EmailException, IOException {
+		UsuarioDTO usuarioDTO = usuarioService.findById(id);
+		Usuario usuariofoto = usuarioService.atualizarComFoto(usuario, file);
+		if (usuarioDTO != null) {
 			usuario.setId(id);
-			usuarioRepository.save(usuario);
-			return ResponseEntity.ok(usuario);
+			usuarioRepository.save(usuariofoto);
+			return ResponseEntity.ok(usuarioDTO);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
-	}
-
-	@GetMapping("/seguidores/{id}")
-	public ResponseEntity<List<RelacionamentoDTO>> buscarRelacionamento(@PathVariable Long id) {
-		List<Relacionamento> seguidores = relacionamentoRepository.buscarRelacionamentos(id);
-		List<RelacionamentoDTO> relacionamentoDTO = seguidores.stream()
-				.map(relacionamento -> new RelacionamentoDTO(relacionamento)).collect(Collectors.toList());
-		return ResponseEntity.ok(relacionamentoDTO);
 	}
 
 	@DeleteMapping("/{id}")
@@ -121,12 +133,4 @@ public class UsuarioController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@GetMapping("/{id}/foto")
-	public ResponseEntity<byte[]> buscarFoto(@PathVariable Long id) {
-		Foto foto = fotoService.buscarPorIdUsuario(id);
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_TYPE, foto.getTipo());
-		headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(foto.getDados().length));
-		return new ResponseEntity<>(foto.getDados(), headers, HttpStatus.OK);
-	}
 }
