@@ -29,12 +29,14 @@ public class ComentarioService {
         return comentarioOpt.map(this::comentarioParaComentarioDTO).orElse(null);
     }
 
-    public ComentarioDTO inserirComentario(String texto) {
-        Comentario comentario = new Comentario();
-        comentario.setTexto(texto);
-        comentario.setDataCriacao(new Date()); 
-        comentario = comentarioRepository.save(comentario);
-        return comentarioParaComentarioDTO(comentario);
+    public ComentarioDTO inserirComentario(Comentario comentario) {
+    	ComentarioDTO comentarioDTO = new ComentarioDTO();
+        comentarioDTO.setTexto(comentario.getTexto());
+        comentarioDTO.setDataCriacao(comentario.getDataCriacao());
+
+        comentarioRepository.save(comentario);
+        return comentarioDTO; 
+
     }
 
     public ComentarioDTO atualizarComentario(Long id, String novoTexto) {

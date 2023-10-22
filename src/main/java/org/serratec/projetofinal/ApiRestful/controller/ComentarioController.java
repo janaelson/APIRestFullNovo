@@ -3,6 +3,8 @@ package org.serratec.projetofinal.ApiRestful.controller;
 import java.util.List;
 
 import org.serratec.projetofinal.ApiRestful.DTO.ComentarioDTO;
+import org.serratec.projetofinal.ApiRestful.model.Comentario;
+import org.serratec.projetofinal.ApiRestful.repository.ComentarioRepository;
 import org.serratec.projetofinal.ApiRestful.service.ComentarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,9 @@ public class ComentarioController {
 
     @Autowired
     private ComentarioService comentarioService;
+    
+    @Autowired
+    private ComentarioRepository comentarioRepository;
 
     @GetMapping
     public ResponseEntity<List<ComentarioDTO>> listarComentariosPorPostagem(@RequestParam(name = "postagemId") Long postagemId) {
@@ -40,16 +45,18 @@ public class ComentarioController {
     }
 
     @PostMapping
-    public ResponseEntity<ComentarioDTO> inserirComentario(@RequestBody ComentarioDTO comentarioDTO) {
-        ComentarioDTO comentario = comentarioService.inserirComentario(comentarioDTO.getTexto());
-        return ResponseEntity.status(HttpStatus.CREATED).body(comentario);
+    public ResponseEntity<ComentarioDTO> inserirComentario(@RequestBody Comentario comentario) {
+        ComentarioDTO comentarioDTO = comentarioService.inserirComentario(comentario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(comentarioDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ComentarioDTO> atualizarComentario(@PathVariable Long id, @RequestBody ComentarioDTO comentarioDTO) {
-        ComentarioDTO comentario = comentarioService.atualizarComentario(id, comentarioDTO.getTexto());
+    public ResponseEntity<ComentarioDTO> atualizarComentario(@PathVariable Long id, @RequestBody Comentario comentario) {
+        ComentarioDTO comentarioDTO = comentarioService.buscarComentarioPorId(id);
         if (comentario != null) {
-            return ResponseEntity.ok(comentario);
+        	comentario.setId(id);
+        	comentarioRepository.save(comentario);
+            return ResponseEntity.ok(comentarioDTO);
         } else {
             return ResponseEntity.notFound().build(); 
         }
