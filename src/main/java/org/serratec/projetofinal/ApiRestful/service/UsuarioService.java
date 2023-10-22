@@ -47,7 +47,7 @@ public class UsuarioService {
 	dto.setSobrenome(usuario.getSobrenome());
 	dto.setDataNascimento(usuario.getDataNascimento());
 	dto.setEmail(usuario.getEmail());
-//	dto.setUrlImagem(uri.toString());
+	dto.setUrlImagem(uri.toString());
 	return dto;
 }
 	
@@ -74,7 +74,7 @@ public class UsuarioService {
 		return usuarioDTO;
 	}
 	
-	public UsuarioDTO inserir(Usuario usuario, MultipartFile file) throws EmailException, IOException {
+	public UsuarioDTO inserir(Usuario usuario) throws EmailException {
 		/*UsuarioDTO usuariosDTO = new UsuarioDTO();*/
 		Usuario usuarioEmailExistente = usuarioRepository.findByEmail(usuario.getEmail());
 		if (usuarioEmailExistente != null) {
@@ -110,6 +110,23 @@ public class UsuarioService {
 		fotoService.inserir(usuario, file);
 		usuario = usuarioRepository.save(usuario);
 		return adicionarImagemURI(usuario);
+	}
+	
+	public Usuario atualizarComFoto(Usuario usuario, MultipartFile file) throws EmailException, IOException {	
+		if(file == null || file.isEmpty()) {
+			file = null;
+		}
+		fotoService.inserir(usuario, file);
+		adicionarImagemURI(usuario);
+		Usuario usuariofoto = new Usuario();
+		usuariofoto.setNome(usuario.getNome());
+		usuariofoto.setSobrenome(usuario.getSobrenome());
+		usuariofoto.setDataNascimento(usuario.getDataNascimento());
+		usuariofoto.setEmail(usuario.getEmail());
+		usuariofoto.setUrlImagem(usuario.getUrlImagem());
+		
+		
+		return usuariofoto;
 	}
 }
 
