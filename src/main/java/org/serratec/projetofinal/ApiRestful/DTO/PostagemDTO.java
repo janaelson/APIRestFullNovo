@@ -9,8 +9,19 @@ public class PostagemDTO {
     private Date dataCriacao;
     private UsuarioDTO usuario;
     private List<ComentarioDTO> comentarios;
+    
+    public PostagemDTO() {}
 
-    public Long getId() {
+    public PostagemDTO(Long id, String conteudo, Date dataCriacao, UsuarioDTO usuario,
+			List<ComentarioDTO> comentarios) {
+		this.id = id;
+		this.conteudo = conteudo;
+		this.dataCriacao = dataCriacao;
+		this.usuario = usuario;
+		this.comentarios = comentarios;
+	}
+
+	public Long getId() {
         return id;
     }
 

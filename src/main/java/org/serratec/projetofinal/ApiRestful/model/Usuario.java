@@ -41,6 +41,16 @@ public class Usuario {
 	@Size(min = 4, max = 10, message = "A senha deve ter entre {min} e {max} caracteres")
 	@Column(nullable = false, length = 10)
 	private String senha;
+	
+	private String urlImagem;
+
+	public String getUrlImagem() {
+		return urlImagem;
+	}
+
+	public void setUrlImagem(String urlImagem) {
+		this.urlImagem = urlImagem;
+	}
 
 	@Column
 	private LocalDate dataNascimento;

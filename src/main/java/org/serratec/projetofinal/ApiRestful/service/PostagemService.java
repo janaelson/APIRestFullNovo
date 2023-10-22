@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.serratec.projetofinal.ApiRestful.model.Postagem;
 import org.serratec.projetofinal.ApiRestful.DTO.ComentarioDTO;
 import org.serratec.projetofinal.ApiRestful.DTO.PostagemDTO;
 import org.serratec.projetofinal.ApiRestful.DTO.UsuarioDTO;
+import org.serratec.projetofinal.ApiRestful.model.Postagem;
 import org.serratec.projetofinal.ApiRestful.repository.PostagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,5 +80,5 @@ public class PostagemService {
         postagemDTO.setComentarios(comentarios);
 
         return postagemDTO;
-    }
+}
 }

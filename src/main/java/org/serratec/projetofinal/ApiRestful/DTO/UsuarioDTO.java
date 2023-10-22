@@ -18,6 +18,8 @@ public class UsuarioDTO {
 
 	private List<RelacionamentoDTO> relacionamennto;
 
+	private String urlImagem;
+
 	public UsuarioDTO() {
 	}
 
@@ -65,6 +67,14 @@ public class UsuarioDTO {
 		this.dataNascimento = dataNascimento;
 	}
 
+	public String getUrlImagem() {
+		return urlImagem;
+	}
+
+	public void setUrlImagem(String urlImagem) {
+		this.urlImagem = urlImagem;
+	}
+
 	public List<RelacionamentoDTO> getRelacionamennto() {
 		return relacionamennto;
 	}
@@ -72,5 +82,5 @@ public class UsuarioDTO {
 	public void setRelacionamennto(List<RelacionamentoDTO> relacionamennto) {
 		this.relacionamennto = relacionamennto;
 	}
-	
+
 }

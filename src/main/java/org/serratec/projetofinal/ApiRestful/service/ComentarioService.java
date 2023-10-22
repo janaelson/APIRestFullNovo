@@ -1,14 +1,15 @@
 package org.serratec.projetofinal.ApiRestful.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.serratec.projetofinal.ApiRestful.DTO.ComentarioDTO;
+import org.serratec.projetofinal.ApiRestful.model.Comentario;
+import org.serratec.projetofinal.ApiRestful.repository.ComentarioRepository;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.serratec.projetofinal.ApiRestful.model.Comentario;
-import org.serratec.projetofinal.ApiRestful.DTO.ComentarioDTO;
-import org.serratec.projetofinal.ApiRestful.repository.ComentarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ComentarioService {
@@ -31,6 +32,7 @@ public class ComentarioService {
     public ComentarioDTO inserirComentario(String texto) {
         Comentario comentario = new Comentario();
         comentario.setTexto(texto);
+        comentario.setDataCriacao(new Date()); 
         comentario = comentarioRepository.save(comentario);
         return comentarioParaComentarioDTO(comentario);
     }
@@ -40,6 +42,7 @@ public class ComentarioService {
         if (comentarioOpt.isPresent()) {
             Comentario comentario = comentarioOpt.get();
             comentario.setTexto(novoTexto);
+            comentario.setDataCriacao(new Date()); 
             comentario = comentarioRepository.save(comentario);
             return comentarioParaComentarioDTO(comentario);
         }
@@ -53,6 +56,7 @@ public class ComentarioService {
     private ComentarioDTO comentarioParaComentarioDTO(Comentario comentario) {
         ComentarioDTO comentarioDTO = new ComentarioDTO();
         comentarioDTO.setTexto(comentario.getTexto());
+        comentarioDTO.setDataCriacao(comentario.getDataCriacao());
 
         return comentarioDTO;
     }

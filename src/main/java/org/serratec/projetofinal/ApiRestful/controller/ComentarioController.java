@@ -50,8 +50,9 @@ public class ComentarioController {
         ComentarioDTO comentario = comentarioService.atualizarComentario(id, comentarioDTO.getTexto());
         if (comentario != null) {
             return ResponseEntity.ok(comentario);
+        } else {
+            return ResponseEntity.notFound().build(); 
         }
-        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
@@ -60,4 +61,3 @@ public class ComentarioController {
         return ResponseEntity.noContent().build();
     }
 }
-

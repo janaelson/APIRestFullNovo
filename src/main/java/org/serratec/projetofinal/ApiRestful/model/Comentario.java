@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "commentario")
+@Table(name = "comentario")
 public class Comentario {
 
 	@Id
@@ -36,7 +36,8 @@ public class Comentario {
     @JoinColumn(name = "id_postagem")
     @JsonBackReference
     private Postagem postagem;
-
+    
+   
 	public Long getId() {
 		return id;
 	}

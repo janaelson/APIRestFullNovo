@@ -5,42 +5,39 @@ import java.util.Date;
 
 public class ComentarioDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
     private String texto;
-    private Date data;
-    private AutorDTO autor;
+    private Date dataCriacao;
     
+
     public ComentarioDTO() {
     }
 
-    public ComentarioDTO(String texto, Date data, AutorDTO autor) {
-        this.texto = texto;
-        this.data = data;
-        this.autor = autor;
-    }
 
-    public String getTexto() {
-        return texto;
-    }
+	public ComentarioDTO(String texto, Date dataCriacao) {
+		this.texto = texto;
+		this.dataCriacao = dataCriacao;
+	}
 
-    public void setTexto(String texto) {
-        this.texto = texto;
-    }
 
-    public Date getData() {
-        return data;
-    }
+	public String getTexto() {
+		return texto;
+	}
 
-    public void setData(Date data) {
-        this.data = data;
-    }
 
-    public AutorDTO getAutor() {
-        return autor;
-    }
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
 
-    public void setAutor(AutorDTO autor) {
-        this.autor = autor;
-    }
+
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+
+	
 }
-
