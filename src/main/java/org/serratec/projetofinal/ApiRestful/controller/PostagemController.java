@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/postagem")
 public class PostagemController {
-	
+
 	@Autowired
 	private ComentarioRepository comentarioRepository;
 
@@ -50,8 +50,6 @@ public class PostagemController {
 		List<ComentarioDTO> comentarioDTO = comentarios.stream()
 				.map(postcomentarios -> new ComentarioDTO(postcomentarios)).collect(Collectors.toList());
 
-		
-		
 		if (postagemDTO == null) {
 			return ResponseEntity.notFound().build();
 		}

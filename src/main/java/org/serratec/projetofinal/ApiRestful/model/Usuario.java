@@ -16,7 +16,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -41,7 +40,7 @@ public class Usuario {
 	@Size(min = 4, max = 10, message = "A senha deve ter entre {min} e {max} caracteres")
 	@Column(nullable = false, length = 10)
 	private String senha;
-	
+
 	private String urlImagem;
 
 	public String getUrlImagem() {
@@ -54,7 +53,7 @@ public class Usuario {
 
 	@Column
 	private LocalDate dataNascimento;
-	
+
 	@OneToMany(mappedBy = "id.usuarioseguido", cascade = CascadeType.ALL)
 	private List<Relacionamento> relacionamento = new ArrayList<>();
 

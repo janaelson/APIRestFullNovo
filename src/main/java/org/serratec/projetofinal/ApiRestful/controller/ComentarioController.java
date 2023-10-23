@@ -22,48 +22,49 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/comentario")
 public class ComentarioController {
 
-    @Autowired
-    private ComentarioService comentarioService;
-    
-    @Autowired
-    private ComentarioRepository comentarioRepository;
+	@Autowired
+	private ComentarioService comentarioService;
 
-    @GetMapping
-    public ResponseEntity<List<ComentarioDTO>> listarComentariosPorPostagem() {
-        List<ComentarioDTO> comentarios = comentarioService.listarComentariosPorPostagem();
-        return ResponseEntity.ok(comentarios);
-    }
+	@Autowired
+	private ComentarioRepository comentarioRepository;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ComentarioDTO> buscarComentarioPorId(@PathVariable Long id) {
-        ComentarioDTO comentario = comentarioService.buscarComentarioPorId(id);
-        if (comentario != null) {
-            return ResponseEntity.ok(comentario);
-        }
-        return ResponseEntity.notFound().build();
-    }
+	@GetMapping
+	public ResponseEntity<List<ComentarioDTO>> listarComentariosPorPostagem() {
+		List<ComentarioDTO> comentarios = comentarioService.listarComentariosPorPostagem();
+		return ResponseEntity.ok(comentarios);
+	}
 
-    @PostMapping
-    public ResponseEntity<ComentarioDTO> inserirComentario(@RequestBody Comentario comentario) {
-        ComentarioDTO comentarioDTO = comentarioService.inserirComentario(comentario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(comentarioDTO);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<ComentarioDTO> buscarComentarioPorId(@PathVariable Long id) {
+		ComentarioDTO comentario = comentarioService.buscarComentarioPorId(id);
+		if (comentario != null) {
+			return ResponseEntity.ok(comentario);
+		}
+		return ResponseEntity.notFound().build();
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ComentarioDTO> atualizarComentario(@PathVariable Long id, @RequestBody Comentario comentario) {
-        ComentarioDTO comentarioDTO = comentarioService.buscarComentarioPorId(id);
-        if (comentario != null) {
-        	comentario.setId(id);
-        	comentarioRepository.save(comentario);
-            return ResponseEntity.ok(comentarioDTO);
-        } else {
-            return ResponseEntity.notFound().build(); 
-        }
-    }
+	@PostMapping
+	public ResponseEntity<ComentarioDTO> inserirComentario(@RequestBody Comentario comentario) {
+		ComentarioDTO comentarioDTO = comentarioService.inserirComentario(comentario);
+		return ResponseEntity.status(HttpStatus.CREATED).body(comentarioDTO);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirComentario(@PathVariable Long id) {
-        comentarioService.excluirComentario(id);
-        return ResponseEntity.noContent().build();
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<ComentarioDTO> atualizarComentario(@PathVariable Long id,
+			@RequestBody Comentario comentario) {
+		ComentarioDTO comentarioDTO = comentarioService.buscarComentarioPorId(id);
+		if (comentario != null) {
+			comentario.setId(id);
+			comentarioRepository.save(comentario);
+			return ResponseEntity.ok(comentarioDTO);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluirComentario(@PathVariable Long id) {
+		comentarioService.excluirComentario(id);
+		return ResponseEntity.noContent().build();
+	}
 }

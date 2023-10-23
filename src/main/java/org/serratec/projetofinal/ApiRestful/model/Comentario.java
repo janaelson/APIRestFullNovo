@@ -20,24 +20,23 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Comentario {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_comentario")
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_comentario")
+	private Long id;
 
-    @NotBlank(message = "Digite o texto")
-    @Size(min = 2, max = 300, message = "O texto deve ter entre {min} e {max} letras")
-    @Column(nullable = false, length = 300)
-    private String texto;
+	@NotBlank(message = "Digite o texto")
+	@Size(min = 2, max = 300, message = "O texto deve ter entre {min} e {max} letras")
+	@Column(nullable = false, length = 300)
+	private String texto;
 
-    @Column
-    private Date dataCriacao;
-    
-    @ManyToOne
-    @JoinColumn(name = "id_postagem")
-    @JsonBackReference
-    private Postagem postagem;
-    
-   
+	@Column
+	private Date dataCriacao;
+
+	@ManyToOne
+	@JoinColumn(name = "id_postagem")
+	@JsonBackReference
+	private Postagem postagem;
+
 	public Long getId() {
 		return id;
 	}
@@ -61,6 +60,5 @@ public class Comentario {
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
-    
-    
+
 }

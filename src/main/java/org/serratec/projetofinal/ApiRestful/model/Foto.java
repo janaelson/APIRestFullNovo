@@ -100,5 +100,4 @@ public class Foto {
 		return Objects.equals(id, other.id);
 	}
 
-	
 }

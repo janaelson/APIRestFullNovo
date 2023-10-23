@@ -24,47 +24,48 @@ import org.springframework.web.bind.annotation.RestController;
 public class RelacionamentoController {
 
 	@Autowired
-    private RelacionamentoRepository relacionamentoRepository;
+	private RelacionamentoRepository relacionamentoRepository;
 
-    @GetMapping
-    public ResponseEntity<List<Relacionamento>> listar() {
-        return ResponseEntity.ok(relacionamentoRepository.findAll());
-    }
+	@GetMapping
+	public ResponseEntity<List<Relacionamento>> listar() {
+		return ResponseEntity.ok(relacionamentoRepository.findAll());
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Relacionamento> buscar(@PathVariable Long id) {
-        Optional<Relacionamento> relacionamentoOpt = relacionamentoRepository.findById(id);
-        if (relacionamentoOpt.isPresent()) {
-            return ResponseEntity.ok(relacionamentoOpt.get());
-        }
-        return ResponseEntity.notFound().build();
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Relacionamento> buscar(@PathVariable Long id) {
+		Optional<Relacionamento> relacionamentoOpt = relacionamentoRepository.findById(id);
+		if (relacionamentoOpt.isPresent()) {
+			return ResponseEntity.ok(relacionamentoOpt.get());
+		}
+		return ResponseEntity.notFound().build();
+	}
 
-    @PostMapping
-    public ResponseEntity<Relacionamento> inserir(@Valid @RequestBody Relacionamento relacionamento) {
-    	relacionamento = relacionamentoRepository.save(relacionamento);
-        return ResponseEntity.status(HttpStatus.CREATED).body(relacionamento);
-    }
+	@PostMapping
+	public ResponseEntity<Relacionamento> inserir(@Valid @RequestBody Relacionamento relacionamento) {
+		relacionamento = relacionamentoRepository.save(relacionamento);
+		return ResponseEntity.status(HttpStatus.CREATED).body(relacionamento);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Relacionamento> atualizar(@PathVariable Long id, @Valid @RequestBody Relacionamento relacionamento) {
-        Optional<Relacionamento> relacionamentoOpt = relacionamentoRepository.findById(id);
-        if (relacionamentoOpt.isPresent()) {
-        	relacionamento.getId();
-            relacionamentoRepository.save(relacionamento);
-            return ResponseEntity.ok(relacionamento);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        Optional<Relacionamento> relacionamentoOpt = relacionamentoRepository.findById(id);
-        if (relacionamentoOpt.isPresent()) {
-            relacionamentoRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<Relacionamento> atualizar(@PathVariable Long id,
+			@Valid @RequestBody Relacionamento relacionamento) {
+		Optional<Relacionamento> relacionamentoOpt = relacionamentoRepository.findById(id);
+		if (relacionamentoOpt.isPresent()) {
+			relacionamento.getId();
+			relacionamentoRepository.save(relacionamento);
+			return ResponseEntity.ok(relacionamento);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluir(@PathVariable Long id) {
+		Optional<Relacionamento> relacionamentoOpt = relacionamentoRepository.findById(id);
+		if (relacionamentoOpt.isPresent()) {
+			relacionamentoRepository.deleteById(id);
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
 }

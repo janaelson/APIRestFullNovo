@@ -21,23 +21,23 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Postagem {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_post")
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_post")
+	private Long id;
 
-    @Column
-    private String conteudo;
+	@Column
+	private String conteudo;
 
-    @Column
-    private Date dataCriacao;
-    
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
-    
+	@Column
+	private Date dataCriacao;
+
+	@ManyToOne
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
+
 	@OneToMany(mappedBy = "postagem", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Comentario> comantarios;
+	@JsonManagedReference
+	private List<Comentario> comantarios;
 
 	public Long getId() {
 		return id;
@@ -63,19 +63,19 @@ public class Postagem {
 		this.dataCriacao = dataCriacao;
 	}
 
-	 public Usuario getUsuario() {
-			return usuario;
-		}
+	public Usuario getUsuario() {
+		return usuario;
+	}
 
-		public void setUsuario(Usuario usuario) {
-			this.usuario = usuario;
-		}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
-		public List<Comentario> getComantarios() {
-			return comantarios;
-		}
+	public List<Comentario> getComantarios() {
+		return comantarios;
+	}
 
-		public void setComantarios(List<Comentario> comantarios) {
-			this.comantarios = comantarios;
-		}
+	public void setComantarios(List<Comentario> comantarios) {
+		this.comantarios = comantarios;
+	}
 }

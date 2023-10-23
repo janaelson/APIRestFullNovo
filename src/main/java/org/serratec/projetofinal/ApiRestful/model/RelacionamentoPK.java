@@ -14,7 +14,7 @@ public class RelacionamentoPK implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_usuario1")
 	private Usuario usuario;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_usuario2")
 	private Usuario usuarioseguido;
@@ -66,5 +66,4 @@ public class RelacionamentoPK implements Serializable {
 		return true;
 	}
 
-	
 }
