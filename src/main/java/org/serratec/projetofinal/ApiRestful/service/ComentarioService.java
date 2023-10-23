@@ -17,8 +17,8 @@ public class ComentarioService {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
-    public List<ComentarioDTO> listarComentariosPorPostagem(Long postagemId) {
-        List<Comentario> comentarios = comentarioRepository.findByPostagemId(postagemId);
+    public List<ComentarioDTO> listarComentariosPorPostagem() {
+        List<Comentario> comentarios = comentarioRepository.findAll();
         return comentarios.stream()
             .map(this::comentarioParaComentarioDTO)
             .collect(Collectors.toList());

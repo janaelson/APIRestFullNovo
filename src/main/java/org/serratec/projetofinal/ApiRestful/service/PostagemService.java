@@ -62,7 +62,7 @@ public class PostagemService {
 			postagemDTO.setUsuario(usuarioDTO);
 		}
 
-		List<ComentarioDTO> comentarios = comentarioService.listarComentariosPorPostagem(postagem.getId());
+		List<ComentarioDTO> comentarios = comentarioService.listarComentariosPorPostagem();
 		postagemDTO.setComentarios(comentarios);
 
 		return postagemDTO;
