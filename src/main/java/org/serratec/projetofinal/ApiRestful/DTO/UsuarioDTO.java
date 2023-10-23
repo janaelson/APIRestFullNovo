@@ -7,6 +7,7 @@ import java.util.List;
 import org.serratec.projetofinal.ApiRestful.model.Usuario;
 
 public class UsuarioDTO {
+	private Long id;
 
 	private String nome;
 
@@ -15,7 +16,7 @@ public class UsuarioDTO {
 	private String email;
 
 	private LocalDate dataNascimento;
-	
+
 	private String urlImagem;
 
 	private List<RelacionamentoDTO> relacionamennto;
@@ -25,14 +26,13 @@ public class UsuarioDTO {
 
 	public UsuarioDTO(Usuario usuario) {
 		super();
+		this.id = usuario.getId();
 		this.nome = usuario.getNome();
 		this.sobrenome = usuario.getSobrenome();
 		this.email = usuario.getEmail();
 		this.dataNascimento = usuario.getDataNascimento();
 		this.relacionamennto = new ArrayList<>();
-//		for (Relacionamento relacionamento : usuario.getRelacionamento()) {
-//			this.relacionamennto.add(relacionamento.getId().getUsuarioseguido());
-//		}
+
 	}
 
 	public String getNome() {
@@ -73,6 +73,14 @@ public class UsuarioDTO {
 
 	public void setUrlImagem(String urlImagem) {
 		this.urlImagem = urlImagem;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public List<RelacionamentoDTO> getRelacionamennto() {
