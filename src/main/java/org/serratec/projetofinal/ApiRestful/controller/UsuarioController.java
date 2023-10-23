@@ -9,7 +9,6 @@ import javax.validation.Valid;
 
 import org.serratec.projetofinal.ApiRestful.DTO.RelacionamentoDTO;
 import org.serratec.projetofinal.ApiRestful.DTO.UsuarioDTO;
-import org.serratec.projetofinal.ApiRestful.exeption.EmailException;
 import org.serratec.projetofinal.ApiRestful.model.Foto;
 import org.serratec.projetofinal.ApiRestful.model.Relacionamento;
 import org.serratec.projetofinal.ApiRestful.model.Usuario;
@@ -76,7 +75,7 @@ public class UsuarioController {
 		usuarioDTO.setRelacionamennto(relacionamentoDTO);
 		return ResponseEntity.ok(usuarioDTO);
 	}
-	
+
 	@GetMapping("/seguidores/{id}")
 	public ResponseEntity<List<RelacionamentoDTO>> buscarRelacionamento(@PathVariable Long id) {
 		List<Relacionamento> seguidores = relacionamentoRepository.buscarRelacionamentos(id);
@@ -93,30 +92,29 @@ public class UsuarioController {
 		headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(foto.getDados().length));
 		return new ResponseEntity<>(foto.getDados(), headers, HttpStatus.OK);
 	}
-	
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<UsuarioDTO> inserir(
-    	@RequestPart MultipartFile file, @RequestPart Usuario usuario) throws IOException{
-    	UsuarioDTO usuarioDTO = usuarioService.inserirComFoto(usuario, file);
-    return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 
-    }
+	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<UsuarioDTO> inserir(@RequestPart MultipartFile file, @RequestPart Usuario usuario)
+			throws IOException {
+		UsuarioDTO usuarioDTO = usuarioService.inserirComFoto(usuario, file);
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 
-    @PostMapping
-    public ResponseEntity<UsuarioDTO> inserir(@Valid @RequestBody Usuario usuario) throws IOException {
-    	UsuarioDTO usuarioDTO = new UsuarioDTO();
-    	usuarioDTO = usuarioService.inserir(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
-    }
+	}
+
+	@PostMapping
+	public ResponseEntity<UsuarioDTO> inserir(@Valid @RequestBody Usuario usuario) throws IOException {
+		UsuarioDTO usuarioDTO = new UsuarioDTO();
+		usuarioDTO = usuarioService.inserir(usuario);
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id,
-			@Valid @RequestBody Usuario usuario,@RequestPart MultipartFile file) throws EmailException, IOException {
+	public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
 		UsuarioDTO usuarioDTO = usuarioService.findById(id);
-		Usuario usuariofoto = usuarioService.atualizarComFoto(usuario, file);
+
 		if (usuarioDTO != null) {
 			usuario.setId(id);
-			usuarioRepository.save(usuariofoto);
+			usuarioRepository.save(usuario);
 			return ResponseEntity.ok(usuarioDTO);
 		} else {
 			return ResponseEntity.notFound().build();

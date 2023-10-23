@@ -80,21 +80,7 @@ public class UsuarioService {
 		if (usuarioEmailExistente != null) {
 			throw new EmailException("Email já cadastrado.");
 		}
-		/*usuariosDTO.setNome(usuario.getNome());
-		usuariosDTO.setSobrenome(usuario.getSobrenome());
-		usuariosDTO.setEmail(usuario.getEmail());
-		usuariosDTO.setDataNascimento(usuario.getDataNascimento());
-		usuariosDTO.setNome(usuario.getNome());*/
-						
-//		usuario = usuarioRepository.save(usuario);
-//		if(!usuario.getRelacionamento().isEmpty()) {
-//			for(Relacionamento rela: usuario.getRelacionamento()) {
-//				Optional<Usuario> findById = usuarioRepository.findById(rela.getId().getUsuarioseguido().getId());
-//				rela.getId().setUsuarioseguido(findById.get());
-//				rela.getId().setUsuario(usuario);
-//			}
-//		}
-//		fotoService.inserir(usuario, file);
+
 		usuario = usuarioRepository.save(usuario);
 		return adicionarImagemURI(usuario);
 	}
@@ -108,7 +94,7 @@ public class UsuarioService {
 		}
 	
 		fotoService.inserir(usuario, file);
-		usuario = usuarioRepository.save(usuario);
+		usuarioRepository.save(usuario);
 		return adicionarImagemURI(usuario);
 	}
 	

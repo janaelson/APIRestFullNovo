@@ -1,20 +1,24 @@
 package org.serratec.projetofinal.ApiRestful.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.serratec.projetofinal.ApiRestful.DTO.ComentarioDTO;
 import org.serratec.projetofinal.ApiRestful.DTO.PostagemDTO;
+import org.serratec.projetofinal.ApiRestful.DTO.RelacionamentoDTO;
 import org.serratec.projetofinal.ApiRestful.DTO.UsuarioDTO;
+import org.serratec.projetofinal.ApiRestful.model.Comentario;
 import org.serratec.projetofinal.ApiRestful.model.Postagem;
+import org.serratec.projetofinal.ApiRestful.repository.ComentarioRepository;
 import org.serratec.projetofinal.ApiRestful.repository.PostagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PostagemService {
-
+	
 	@Autowired
 	private PostagemRepository postagemRepository;
 
@@ -33,6 +37,7 @@ public class PostagemService {
 		Optional<Postagem> postagemOpt = postagemRepository.findById(id);
 		if (postagemOpt.isPresent()) {
 			Postagem postagem = postagemOpt.get();
+
 			return postagemParaPostagemDTO(postagem);
 		}
 		return null;
@@ -61,9 +66,6 @@ public class PostagemService {
 			UsuarioDTO usuarioDTO = usuarioService.findById(userId);
 			postagemDTO.setUsuario(usuarioDTO);
 		}
-
-		List<ComentarioDTO> comentarios = comentarioService.listarComentariosPorPostagem();
-		postagemDTO.setComentarios(comentarios);
 
 		return postagemDTO;
 	}

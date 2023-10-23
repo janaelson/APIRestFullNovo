@@ -1,11 +1,15 @@
 package org.serratec.projetofinal.ApiRestful.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.serratec.projetofinal.ApiRestful.DTO.ComentarioDTO;
 import org.serratec.projetofinal.ApiRestful.DTO.PostagemDTO;
+import org.serratec.projetofinal.ApiRestful.model.Comentario;
 import org.serratec.projetofinal.ApiRestful.model.Postagem;
+import org.serratec.projetofinal.ApiRestful.repository.ComentarioRepository;
 import org.serratec.projetofinal.ApiRestful.repository.PostagemRepository;
 import org.serratec.projetofinal.ApiRestful.service.PostagemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/postagem")
 public class PostagemController {
+	
+	@Autowired
+	private ComentarioRepository comentarioRepository;
 
 	@Autowired
 	private PostagemService postagemService;
@@ -39,9 +46,16 @@ public class PostagemController {
 	@GetMapping("/{id}")
 	public ResponseEntity<PostagemDTO> buscar(@PathVariable Long id) {
 		PostagemDTO postagemDTO = postagemService.buscarPostagemPorId(id);
+		List<Comentario> comentarios = comentarioRepository.buscarComentarios(id);
+		List<ComentarioDTO> comentarioDTO = comentarios.stream()
+				.map(postcomentarios -> new ComentarioDTO(postcomentarios)).collect(Collectors.toList());
+
+		
+		
 		if (postagemDTO == null) {
 			return ResponseEntity.notFound().build();
 		}
+		postagemDTO.setComentarios(comentarioDTO);
 		return ResponseEntity.ok(postagemDTO);
 	}
 
